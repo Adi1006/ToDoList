@@ -2,6 +2,8 @@ const express=require('express');
 const  bodyParser=require('body-parser');
 const { default: mongoose } = require('mongoose');
 const _ =require("lodash");
+const dotenv = require("dotenv").config();
+
 
 const app=express();
 // var items=["Buy Food","Cook Food","Eat Food"];
@@ -10,8 +12,8 @@ app.set('view engine','ejs');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
 
-
-mongoose.connect("mongodb+srv://admin-aditya:Test1234@cluster0.zbzs3.mongodb.net/todolistDB");
+const mongodbCluster = process.env.mongData;
+mongoose.connect(mongodbCluster);
 
 const itemSchema = {
     name:String
