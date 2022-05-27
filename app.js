@@ -2,7 +2,6 @@ const express=require('express');
 const  bodyParser=require('body-parser');
 const { default: mongoose } = require('mongoose');
 const _ =require("lodash");
-const dotenv = require("dotenv").config();
 
 const app=express();
 // var items=["Buy Food","Cook Food","Eat Food"];
@@ -11,8 +10,8 @@ app.set('view engine','ejs');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
 
-const data = process.env.mongData;
-mongoose.connect(data);
+
+mongoose.connect("mongodb+srv://admin-aditya:Test1234@cluster0.zbzs3.mongodb.net/todolistDB");
 
 const itemSchema = {
     name:String
@@ -91,7 +90,7 @@ app.get("/",function(req,res){
                         console.log(err);
                     }
                     else{
-                        console.log("Sucessfull!      kjjrkejg;l");
+                        console.log("Sucessfull!");
                     }
                 });
                 res.redirect("/");
@@ -125,8 +124,8 @@ app.post("/",function (req,res) {
 
 app.post("/delete",function (req,res) {
     const checkedItemId=req.body.checkbox;
-    const listName=req.body.listName;
-    if(listName === "Today"){
+    const listname=req.body.listName;
+    if(listname === "Today"){
         Item.findByIdAndRemove(checkedItemId,function (err) {
             if(err){
                 console.log(err);
@@ -138,9 +137,9 @@ app.post("/delete",function (req,res) {
         });
     }
     else{
-        List.findOneAndUpdate({name:listName},{$pull:{items:{_id:checkedItemId}}},function (err,foundList) {
+        List.findOneAndUpdate({name:listname},{$pull:{items:{_id:checkedItemId}}},function (err,foundList) {
             if(!err){
-                res.redirect("/"+listName);
+                res.redirect("/"+listname);
             }
         })
     }
